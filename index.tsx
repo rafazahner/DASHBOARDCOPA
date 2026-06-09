@@ -1597,8 +1597,16 @@ const Dashboard = () => {
             </div>
 
             {/* Colunas Kanban */}
-            <div className="flex-1 min-h-0 grid gap-4" style={{ gridTemplateColumns: `repeat(${buckets.length || 1}, minmax(0, 1fr))` }}>
-              {buckets.map((bucket, idx) => {
+            {(() => {
+              const BUCKET_ORDER = ['defini', 'aguard', 'desenvolv', 'teste', 'piloto', 'entreg'];
+              const sortedBuckets = [...buckets].sort((a, b) => {
+                const ai = BUCKET_ORDER.findIndex(k => a.name.toLowerCase().includes(k));
+                const bi = BUCKET_ORDER.findIndex(k => b.name.toLowerCase().includes(k));
+                return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+              });
+              return (
+            <div className="flex-1 min-h-0 grid gap-4" style={{ gridTemplateColumns: `repeat(${sortedBuckets.length || 1}, minmax(0, 1fr))` }}>
+              {sortedBuckets.map((bucket, idx) => {
                 const COLORS = [
                   { color: '#64748b', bg: 'bg-slate-50', border: 'border-slate-200', dot: 'bg-slate-400', badge: 'bg-slate-100 text-slate-600' },
                   { color: '#003087', bg: 'bg-blue-50', border: 'border-blue-200', dot: 'bg-blue-500', badge: 'bg-blue-100 text-blue-700' },
@@ -1673,6 +1681,8 @@ const Dashboard = () => {
                 );
               })}
             </div>
+              );
+            })()}
           </div>
 
           {/* VIEW 5: Cronograma */}
