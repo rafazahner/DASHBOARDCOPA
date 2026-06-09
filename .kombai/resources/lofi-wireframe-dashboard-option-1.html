@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção 1 - Layout Conservador com Grid Otimizado</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: #fff;
+      color: #333;
+      padding: 20px;
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #333;
+    }
+    .title h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .title p {
+      font-size: 14px;
+      color: #666;
+    }
+    .wireframe-container {
+      max-width: 1920px;
+      margin: 0 auto;
+      border: 3px solid #333;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: #fff;
+      border: 2px solid #333;
+      margin-bottom: 20px;
+    }
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .logo-box {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #666;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .title-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .status-text {
+      font-size: 12px;
+      color: #666;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .timer-box {
+      border: 2px solid #666;
+      padding: 10px 20px;
+      background: #e0e0e0;
+      text-align: center;
+    }
+    .clock {
+      font-size: 32px;
+      font-weight: bold;
+    }
+    .carousel-indicator {
+      text-align: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #999;
+    }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .dot.active {
+      background: #333;
+    }
+    
+    /* VIEW 1 - Visão Geral */
+    .view-1 {
+      display: block;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    .kpi-card {
+      border: 2px solid #333;
+      padding: 12px;
+      background: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .kpi-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .kpi-icon {
+      width: 30px;
+      height: 30px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      margin: 5px auto;
+      background: #e0e0e0;
+    }
+    .kpi-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+    .metric-card {
+      border: 2px solid #333;
+      padding: 15px;
+      background: #fff;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gauge-circle {
+      width: 100px;
+      height: 60px;
+      border: 2px solid #666;
+      border-radius: 100px 100px 0 0;
+      border-bottom: none;
+      background: #f0f0f0;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .gauge-needle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      height: 45px;
+      background: #333;
+      transform-origin: bottom;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+    .metric-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 5px;
+      text-align: center;
+    }
+    .metric-value {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    /* VIEW 2 - Agentes */
+    .view-2 {
+      display: none;
+    }
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      height: 100%;
+    }
+    .agent-card {
+      border: 2px solid #333;
+      padding: 15px;
+      background: #fff;
+      position: relative;
+    }
+    .agent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .agent-rank {
+      border: 2px solid #333;
+      padding: 5px 10px;
+      background: #e0e0e0;
+      font-weight: bold;
+    }
+    .agent-avatar {
+      width: 80px;
+      height: 80px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .agent-name {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .agent-stat {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .agent-stat-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .agent-stat-value {
+      font-size: 48px;
+      font-weight: bold;
+    }
+    .recent-tickets {
+      margin-top: 15px;
+    }
+    .ticket-item {
+      border: 1px solid #999;
+      padding: 8px;
+      margin-bottom: 5px;
+      background: #f9f9f9;
+      font-size: 10px;
+    }
+    
+    /* VIEW 3 - NPS */
+    .view-3 {
+      display: none;
+    }
+    .nps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    .nps-card {
+      border: 2px solid #333;
+      padding: 20px;
+      background: #fff;
+      text-align: center;
+      position: relative;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nps-bg {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px dashed #999;
+      background: #f5f5f5;
+    }
+    .nps-content {
+      position: relative;
+      z-index: 1;
+    }
+    .nps-label {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .nps-value {
+      font-size: 64px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .nps-percent {
+      font-size: 18px;
+      padding: 5px 15px;
+      border: 2px solid #333;
+      background: #e0e0e0;
+      display: inline-block;
+    }
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .summary-card {
+      border: 2px solid #333;
+      padding: 20px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .summary-icon {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      background: #e0e0e0;
+    }
+    
+    .badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 3px 8px;
+      font-size: 9px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      border-radius: 3px;
+      color: white;
+      z-index: 10;
+    }
+    .badge-reuse {
+      background: #4CAF50;
+    }
+    .badge-new {
+      background: #FF9800;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">
+    <h1>Opção 1 - Layout Conservador com Grid Otimizado</h1>
+    <p>Mantém a estrutura de 3 views em carrossel, mas reorganiza componentes em grid mais eficiente (6 colunas)</p>
+  </div>
+
+  <div class="wireframe-container">
+    <!-- HEADER -->
+    <!-- REUSABLE: Header Section (similar to current implementation) -->
+    <div class="header" style="position: relative;">
+      <span class="badge badge-reuse" title="Reuse current header structure">REUSE Header</span>
+      <div class="logo-section">
+        <div class="logo-box">[LOGO]</div>
+        <div>
+          <div class="title-text">Dashboard de Chamados Ultra</div>
+          <div class="status-text">🟢 CONECTADO | Atualizado há 15s</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <!-- REUSABLE: Carousel Timer Component -->
+        <div class="timer-box" style="position: relative;">
+          <span class="badge badge-reuse" title="Reuse timer component">REUSE Timer</span>
+          <div style="font-size: 10px; margin-bottom: 3px;">PRÓXIMA TELA</div>
+          <div style="font-size: 20px; font-weight: bold;">18s</div>
+          <div style="margin-top: 3px; font-size: 9px;">[Progress Circle]</div>
+        </div>
+        <div class="clock">14:32</div>
+      </div>
+    </div>
+
+    <!-- CAROUSEL INDICATOR -->
+    <div class="carousel-indicator">
+      <div style="font-weight: bold; margin-bottom: 5px;">VIEW 1 DE 3: VISÃO GERAL DO SUPORTE</div>
+      <div class="carousel-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: VISÃO GERAL (6-column grid for max density) -->
+    <div class="view-1">
+      <!-- KPI Row (6 cards in one row) -->
+      <div class="kpi-row">
+        <!-- REUSABLE: KpiCard Component -->
+        <div class="kpi-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - KpiCard">REUSE KpiCard</span>
+          <div class="kpi-label">Pendentes</div>
+          <div class="kpi-icon">⚠️</div>
+          <div class="kpi-value">45</div>
+        </div>
+        
+        <div class="kpi-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - KpiCard">REUSE KpiCard</span>
+          <div class="kpi-label">Novos</div>
+          <div class="kpi-icon">➕</div>
+          <div class="kpi-value">12</div>
+        </div>
+        
+        <div class="kpi-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - KpiCard">REUSE KpiCard</span>
+          <div class="kpi-label">Em Atend.</div>
+          <div class="kpi-icon">⏱️</div>
+          <div class="kpi-value">28</div>
+        </div>
+        
+        <div class="kpi-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - KpiCard">REUSE KpiCard</span>
+          <div class="kpi-label">Parados</div>
+          <div class="kpi-icon">⏸️</div>
+          <div class="kpi-value">5</div>
+        </div>
+        
+        <div class="kpi-card" style="position: relative; border-color: #f00;">
+          <span class="badge badge-reuse" title="index.tsx - KpiCard">REUSE KpiCard</span>
+          <div class="kpi-label">Vencidos</div>
+          <div class="kpi-icon">❌</div>
+          <div class="kpi-value">3</div>
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #f00;"></div>
+        </div>
+        
+        <!-- NEW: Quick Stats Summary Card -->
+        <div class="kpi-card" style="position: relative;">
+          <span class="badge badge-new" title="New component: QuickStats">NEW QuickStats</span>
+          <div class="kpi-label">Total Hoje</div>
+          <div class="kpi-icon">📊</div>
+          <div class="kpi-value">93</div>
+        </div>
+      </div>
+
+      <!-- Metrics Grid (6 columns with gauges) -->
+      <div class="metrics-grid">
+        <!-- REUSABLE: MetricCard with Gauge -->
+        <div class="metric-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - MetricCard">REUSE MetricCard</span>
+          <div class="metric-label">Chamados Mês</div>
+          <div class="kpi-icon" style="width: 40px; height: 40px; margin: 10px 0;">📅</div>
+          <div class="metric-value">342</div>
+        </div>
+        
+        <div class="metric-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - MetricCard">REUSE MetricCard</span>
+          <div class="metric-label">Fora Prazo</div>
+          <div class="kpi-icon" style="width: 40px; height: 40px; margin: 10px 0;">🕐</div>
+          <div class="metric-value">18</div>
+        </div>
+        
+        <div class="metric-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - MetricCard">REUSE MetricCard</span>
+          <div class="metric-label">Abertos Hoje</div>
+          <div class="kpi-icon" style="width: 40px; height: 40px; margin: 10px 0;">📈</div>
+          <div class="metric-value">27</div>
+        </div>
+        
+        <!-- REUSABLE: MetricCard with Gauge Component -->
+        <div class="metric-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - Gauge + MetricCard">REUSE Gauge</span>
+          <div class="gauge-circle">
+            <div class="gauge-needle"></div>
+            <div style="position: absolute; bottom: -15px; left: 0; right: 0; text-align: center; font-size: 8px;">0 — 30 — 60</div>
+          </div>
+          <div class="metric-label">TMA 1ª Resp Hoje</div>
+          <div class="metric-value">23 min</div>
+        </div>
+        
+        <div class="metric-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - Gauge + MetricCard">REUSE Gauge</span>
+          <div class="gauge-circle">
+            <div class="gauge-needle"></div>
+            <div style="position: absolute; bottom: -15px; left: 0; right: 0; text-align: center; font-size: 8px;">0 — 30 — 60</div>
+          </div>
+          <div class="metric-label">TMA 1ª Resp Mês</div>
+          <div class="metric-value">28 min</div>
+        </div>
+        
+        <div class="metric-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - Gauge + MetricCard">REUSE Gauge</span>
+          <div class="gauge-circle">
+            <div class="gauge-needle" style="transform: translateX(-50%) rotate(-20deg);"></div>
+            <div style="position: absolute; bottom: -15px; left: 0; right: 0; text-align: center; font-size: 8px;">0 — 120 — 240</div>
+          </div>
+          <div class="metric-label">TMA Solução Hoje</div>
+          <div class="metric-value">85 min</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: PRODUTIVIDADE POR OPERADOR -->
+    <div class="view-2">
+      <div class="agents-grid">
+        <!-- REUSABLE: AgentShowcaseCard -->
+        <div class="agent-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - AgentShowcaseCard">REUSE AgentCard</span>
+          <div class="agent-header">
+            <div class="agent-rank">P1</div>
+          </div>
+          <div class="agent-avatar">[AVATAR]</div>
+          <div class="agent-name">ENZO</div>
+          <div class="agent-stat">
+            <div class="agent-stat-label">Encerrados Hoje</div>
+            <div class="agent-stat-value">18</div>
+          </div>
+          <div class="recent-tickets">
+            <div style="font-size: 9px; font-weight: bold; margin-bottom: 5px; text-align: center; text-transform: uppercase;">─── Atividade Recente ───</div>
+            <div class="ticket-item">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                <div style="font-weight: bold;">#12345</div>
+                <div>15:30</div>
+              </div>
+              <div>Problema com login no sistema...</div>
+              <div style="margin-top: 2px; font-weight: bold;">✓ FECHADO</div>
+            </div>
+            <div class="ticket-item">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                <div style="font-weight: bold;">#12344</div>
+                <div>14:45</div>
+              </div>
+              <div>Email não está enviando...</div>
+              <div style="margin-top: 2px; font-weight: bold;">✓ FECHADO</div>
+            </div>
+            <div class="ticket-item">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                <div style="font-weight: bold;">#12343</div>
+                <div>13:20</div>
+              </div>
+              <div>Dúvida sobre cadastro...</div>
+              <div style="margin-top: 2px; font-weight: bold;">✓ FECHADO</div>
+            </div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: #333;"></div>
+        </div>
+
+        <div class="agent-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - AgentShowcaseCard">REUSE AgentCard</span>
+          <div class="agent-header">
+            <div class="agent-rank">P2</div>
+          </div>
+          <div class="agent-avatar">[AVATAR]</div>
+          <div class="agent-name">RAFAEL</div>
+          <div class="agent-stat">
+            <div class="agent-stat-label">Encerrados Hoje</div>
+            <div class="agent-stat-value">15</div>
+          </div>
+          <div class="recent-tickets">
+            <div style="font-size: 9px; font-weight: bold; margin-bottom: 5px; text-align: center; text-transform: uppercase;">─── Atividade Recente ───</div>
+            <div class="ticket-item">#12342 | Sistema lento | 15:10 | ✓ FECHADO</div>
+            <div class="ticket-item">#12341 | Backup não funcionou | 14:30 | ✓ FECHADO</div>
+            <div class="ticket-item">#12340 | Usuário bloqueado | 13:45 | ✓ FECHADO</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 80%; height: 4px; background: #666;"></div>
+        </div>
+
+        <div class="agent-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - AgentShowcaseCard">REUSE AgentCard</span>
+          <div class="agent-header">
+            <div class="agent-rank">P3</div>
+          </div>
+          <div class="agent-avatar">[AVATAR]</div>
+          <div class="agent-name">CAROL</div>
+          <div class="agent-stat">
+            <div class="agent-stat-label">Encerrados Hoje</div>
+            <div class="agent-stat-value">12</div>
+          </div>
+          <div class="recent-tickets">
+            <div style="font-size: 9px; font-weight: bold; margin-bottom: 5px; text-align: center; text-transform: uppercase;">─── Atividade Recente ───</div>
+            <div class="ticket-item">#12339 | Acesso negado | 15:00 | ✓ FECHADO</div>
+            <div class="ticket-item">#12338 | Rede instável | 14:15 | ✓ FECHADO</div>
+            <div class="ticket-item">#12337 | Senha expirada | 13:30 | ✓ FECHADO</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 60%; height: 4px; background: #999;"></div>
+        </div>
+
+        <div class="agent-card" style="position: relative;">
+          <span class="badge badge-reuse" title="index.tsx - AgentShowcaseCard">REUSE AgentCard</span>
+          <div class="agent-header">
+            <div class="agent-rank">P4</div>
+          </div>
+          <div class="agent-avatar">[AVATAR]</div>
+          <div class="agent-name">RUBÃO</div>
+          <div class="agent-stat">
+            <div class="agent-stat-label">Encerrados Hoje</div>
+            <div class="agent-stat-value">9</div>
+          </div>
+          <div class="recent-tickets">
+            <div style="font-size: 9px; font-weight: bold; margin-bottom: 5px; text-align: center; text-transform: uppercase;">─── Atividade Recente ───</div>
+            <div class="ticket-item">#12336 | VPN não conecta | 14:50 | ✓ FECHADO</div>
+            <div class="ticket-item">#12335 | Impressora offline | 13:25 | ✓ FECHADO</div>
+            <div class="ticket-item">#12334 | Computador travando | 12:40 | ✓ FECHADO</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 40%; height: 4px; background: #ccc;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: SATISFAÇÃO DO CLIENTE (NPS) -->
+    <div class="view-3">
+      <!-- NPS Cards Row -->
+      <div class="nps-grid">
+        <!-- REUSABLE: NPS Rating Card (similar structure to current) -->
+        <div class="nps-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current NPS cards">REUSE NPSCard</span>
+          <div class="nps-bg"></div>
+          <div class="nps-content">
+            <div class="nps-label">Péssimo</div>
+            <div style="margin: 15px 0; font-size: 10px;">[Weather: Snow Effect]</div>
+            <div class="nps-value">2</div>
+            <div class="nps-percent">6.7%</div>
+          </div>
+        </div>
+
+        <div class="nps-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current NPS cards">REUSE NPSCard</span>
+          <div class="nps-bg"></div>
+          <div class="nps-content">
+            <div class="nps-label">Ruim</div>
+            <div style="margin: 15px 0; font-size: 10px;">[Weather: Rain Effect]</div>
+            <div class="nps-value">1</div>
+            <div class="nps-percent">3.3%</div>
+          </div>
+        </div>
+
+        <div class="nps-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current NPS cards">REUSE NPSCard</span>
+          <div class="nps-bg"></div>
+          <div class="nps-content">
+            <div class="nps-label">Regular</div>
+            <div style="margin: 15px 0; font-size: 10px;">[Weather: Cloudy Effect]</div>
+            <div class="nps-value">3</div>
+            <div class="nps-percent">10.0%</div>
+          </div>
+        </div>
+
+        <div class="nps-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current NPS cards">REUSE NPSCard</span>
+          <div class="nps-bg"></div>
+          <div class="nps-content">
+            <div class="nps-label">Bom</div>
+            <div style="margin: 15px 0; font-size: 10px;">[Weather: Partly Sunny]</div>
+            <div class="nps-value">8</div>
+            <div class="nps-percent">26.7%</div>
+          </div>
+        </div>
+
+        <div class="nps-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current NPS cards">REUSE NPSCard</span>
+          <div class="nps-bg"></div>
+          <div class="nps-content">
+            <div class="nps-label">Ótimo</div>
+            <div style="margin: 15px 0; font-size: 10px;">[Weather: Sunny Effect]</div>
+            <div class="nps-value">16</div>
+            <div class="nps-percent">53.3%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="summary-cards">
+        <!-- REUSABLE: Summary stat cards (similar to current bottom cards) -->
+        <div class="summary-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current summary cards">REUSE SummaryCard</span>
+          <div>
+            <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Tickets Encerrados</div>
+            <div style="font-size: 36px; font-weight: bold;">342</div>
+          </div>
+          <div class="summary-icon">📊</div>
+        </div>
+
+        <div class="summary-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current summary cards">REUSE SummaryCard</span>
+          <div>
+            <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Usuários que Responderam</div>
+            <div style="font-size: 36px; font-weight: bold;">30</div>
+          </div>
+          <div class="summary-icon">📈</div>
+        </div>
+
+        <div class="summary-card" style="position: relative;">
+          <span class="badge badge-reuse" title="Similar to current summary cards">REUSE SummaryCard</span>
+          <div>
+            <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Usuários S/ Resposta</div>
+            <div style="font-size: 36px; font-weight: bold;">312</div>
+          </div>
+          <div class="summary-icon">⚠️</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px; padding: 20px; border: 2px dashed #999; background: #f9f9f9;">
+    <h3 style="margin-bottom: 10px;">Principais Características:</h3>
+    <ul style="line-height: 1.8;">
+      <li><strong>Grid 6 colunas</strong>: Máxima densidade de informação para telas grandes/TV</li>
+      <li><strong>Carrossel mantido</strong>: 3 views com navegação automática existente</li>
+      <li><strong>Componentes reutilizados</strong>: KpiCard, MetricCard, Gauge, AgentShowcaseCard, NPSCard (verde = REUSE)</li>
+      <li><strong>1 componente novo</strong>: QuickStats para resumo rápido (laranja = NEW)</li>
+      <li><strong>Layout compacto</strong>: Aproveita espaço horizontal, ideal para monitores/TVs</li>
+      <li><strong>Mínimas mudanças</strong>: Conserva estrutura atual, apenas reorganiza em grid mais eficiente</li>
+    </ul>
+  </div>
+</body>
+</html>

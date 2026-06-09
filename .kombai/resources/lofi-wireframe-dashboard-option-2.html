@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção 2 - Layout Híbrido com Painel Lateral Fixo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: #fff;
+      color: #333;
+      padding: 20px;
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #333;
+    }
+    .title h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .title p {
+      font-size: 14px;
+      color: #666;
+    }
+    .wireframe-container {
+      max-width: 1920px;
+      margin: 0 auto;
+      border: 3px solid #333;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: #fff;
+      border: 2px solid #333;
+      margin-bottom: 20px;
+    }
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .logo-box {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #666;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .title-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .status-text {
+      font-size: 12px;
+      color: #666;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .timer-box {
+      border: 2px solid #666;
+      padding: 10px 20px;
+      background: #e0e0e0;
+      text-align: center;
+    }
+    .clock {
+      font-size: 32px;
+      font-weight: bold;
+    }
+    
+    /* HYBRID LAYOUT: Sidebar + Carousel Content */
+    .main-content {
+      display: flex;
+      gap: 15px;
+    }
+    
+    /* Fixed Left Sidebar (Always Visible Stats) */
+    .sidebar-fixed {
+      width: 280px;
+      flex-shrink: 0;
+    }
+    .sidebar-section {
+      background: #fff;
+      border: 2px solid #333;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #333;
+    }
+    .sidebar-stat {
+      padding: 10px;
+      border: 1px solid #999;
+      margin-bottom: 8px;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-stat-label {
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+    .sidebar-stat-value {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .mini-gauge {
+      width: 60px;
+      height: 35px;
+      border: 2px solid #666;
+      border-radius: 60px 60px 0 0;
+      border-bottom: none;
+      background: #f0f0f0;
+      position: relative;
+      margin: 8px auto;
+    }
+    .mini-needle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      height: 25px;
+      background: #333;
+      transform-origin: bottom;
+      transform: translateX(-50%) rotate(-30deg);
+    }
+    
+    /* Carousel Content Area */
+    .carousel-area {
+      flex: 1;
+    }
+    .carousel-indicator {
+      text-align: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      background: #fff;
+      border: 2px solid #999;
+    }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .dot.active {
+      background: #333;
+    }
+    
+    /* VIEW 1 - Detailed Metrics */
+    .view-1 {
+      display: block;
+    }
+    .metrics-2col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .metrics-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .detail-card {
+      border: 2px solid #333;
+      padding: 15px;
+      background: #fff;
+      position: relative;
+    }
+    .detail-header {
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #999;
+    }
+    .detail-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .detail-value {
+      font-size: 48px;
+      font-weight: bold;
+    }
+    .detail-icon {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      background: #e0e0e0;
+    }
+    .detail-subtext {
+      font-size: 9px;
+      color: #666;
+    }
+    
+    /* VIEW 2 - Agents (3 column) */
+    .view-2 {
+      display: none;
+    }
+    .agents-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+    .agent-card-large {
+      border: 2px solid #333;
+      padding: 20px;
+      background: #fff;
+      position: relative;
+    }
+    .agent-header-large {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .agent-rank-large {
+      border: 2px solid #333;
+      padding: 8px 15px;
+      background: #e0e0e0;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .agent-avatar-large {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .agent-name-large {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .agent-stat-large {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .agent-stat-label-large {
+      font-size: 10px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .agent-stat-value-large {
+      font-size: 64px;
+      font-weight: bold;
+    }
+    .ticket-list {
+      margin-top: 20px;
+    }
+    .ticket-header {
+      font-size: 9px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 5px;
+      background: #e0e0e0;
+      border: 1px solid #999;
+    }
+    .ticket-item {
+      border: 1px solid #999;
+      padding: 10px;
+      margin-bottom: 6px;
+      background: #f9f9f9;
+      font-size: 11px;
+    }
+    
+    /* VIEW 3 - NPS with Charts */
+    .view-3 {
+      display: none;
+    }
+    .nps-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .nps-chart-area {
+      border: 2px solid #333;
+      padding: 20px;
+      background: #fff;
+      position: relative;
+    }
+    .chart-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 250px;
+      border-bottom: 2px solid #333;
+      padding: 10px;
+    }
+    .bar {
+      width: 80px;
+      background: #e0e0e0;
+      border: 2px solid #666;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 10px;
+      position: relative;
+    }
+    .bar-value {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .bar-label {
+      position: absolute;
+      bottom: -25px;
+      font-size: 9px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .nps-summary {
+      border: 2px solid #333;
+      padding: 20px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .nps-score {
+      font-size: 80px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .nps-label {
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    
+    .badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 3px 8px;
+      font-size: 9px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      border-radius: 3px;
+      color: white;
+      z-index: 10;
+    }
+    .badge-reuse {
+      background: #4CAF50;
+    }
+    .badge-new {
+      background: #FF9800;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">
+    <h1>Opção 2 - Layout Híbrido com Painel Lateral Fixo</h1>
+    <p>Sidebar fixa (sempre visível) + área central com carrossel de 3 views. Máxima densidade de informação.</p>
+  </div>
+
+  <div class="wireframe-container">
+    <!-- HEADER -->
+    <div class="header" style="position: relative;">
+      <span class="badge badge-reuse" title="Reuse current header">REUSE Header</span>
+      <div class="logo-section">
+        <div class="logo-box">[LOGO]</div>
+        <div>
+          <div class="title-text">Dashboard de Chamados Ultra</div>
+          <div class="status-text">🟢 CONECTADO | Atualizado há 15s</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="timer-box" style="position: relative;">
+          <span class="badge badge-reuse" title="Reuse timer">REUSE Timer</span>
+          <div style="font-size: 10px; margin-bottom: 3px;">PRÓXIMA TELA</div>
+          <div style="font-size: 20px; font-weight: bold;">18s</div>
+          <div style="margin-top: 3px; font-size: 9px;">[Progress Circle]</div>
+        </div>
+        <div class="clock">14:32</div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT: SIDEBAR + CAROUSEL -->
+    <div class="main-content">
+      
+      <!-- FIXED LEFT SIDEBAR (Always Visible) -->
+      <div class="sidebar-fixed">
+        <!-- NEW: Always-visible stats panel -->
+        <div class="sidebar-section" style="position: relative;">
+          <span class="badge badge-new" title="New component: StatsSidebar">NEW StatsSidebar</span>
+          <div class="sidebar-title">📊 Status Atual</div>
+          <div class="sidebar-stat" style="border-left: 3px solid #f00;">
+            <div>
+              <div class="sidebar-stat-label">Pendentes</div>
+              <div class="sidebar-stat-value">45</div>
+            </div>
+            <div style="font-size: 20px;">⚠️</div>
+          </div>
+          <div class="sidebar-stat">
+            <div>
+              <div class="sidebar-stat-label">Novos</div>
+              <div class="sidebar-stat-value">12</div>
+            </div>
+            <div style="font-size: 20px;">➕</div>
+          </div>
+          <div class="sidebar-stat">
+            <div>
+              <div class="sidebar-stat-label">Em Atendimento</div>
+              <div class="sidebar-stat-value">28</div>
+            </div>
+            <div style="font-size: 20px;">⏱️</div>
+          </div>
+          <div class="sidebar-stat">
+            <div>
+              <div class="sidebar-stat-label">Parados</div>
+              <div class="sidebar-stat-value">5</div>
+            </div>
+            <div style="font-size: 20px;">⏸️</div>
+          </div>
+          <div class="sidebar-stat" style="border: 2px solid #f00; background: #ffe0e0;">
+            <div>
+              <div class="sidebar-stat-label">Vencidos</div>
+              <div class="sidebar-stat-value" style="color: #f00;">3</div>
+            </div>
+            <div style="font-size: 20px;">❌</div>
+          </div>
+        </div>
+
+        <!-- NEW: TMA Gauges Mini -->
+        <div class="sidebar-section" style="position: relative;">
+          <span class="badge badge-new" title="New: Mini TMA panel">NEW TMASidebar</span>
+          <div class="sidebar-title">⏱️ TMA Hoje</div>
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: 9px; text-align: center; margin-bottom: 5px; font-weight: bold;">1ª Resposta</div>
+            <div class="mini-gauge">
+              <div class="mini-needle"></div>
+            </div>
+            <div style="text-align: center; font-size: 16px; font-weight: bold;">23 min</div>
+          </div>
+          <div>
+            <div style="font-size: 9px; text-align: center; margin-bottom: 5px; font-weight: bold;">Solução</div>
+            <div class="mini-gauge">
+              <div class="mini-needle" style="transform: translateX(-50%) rotate(-15deg);"></div>
+            </div>
+            <div style="text-align: center; font-size: 16px; font-weight: bold;">85 min</div>
+          </div>
+        </div>
+
+        <!-- NEW: Quick Links / Actions -->
+        <div class="sidebar-section" style="position: relative;">
+          <span class="badge badge-new" title="New: Quick actions">NEW QuickActions</span>
+          <div class="sidebar-title">⚡ Ações Rápidas</div>
+          <div style="border: 2px solid #333; padding: 8px; margin-bottom: 6px; background: #fff; text-align: center; font-size: 11px; font-weight: bold; cursor: pointer;">
+            🔄 Atualizar Agora
+          </div>
+          <div style="border: 2px solid #333; padding: 8px; margin-bottom: 6px; background: #fff; text-align: center; font-size: 11px; font-weight: bold; cursor: pointer;">
+            📊 Exportar Dados
+          </div>
+          <div style="border: 2px solid #333; padding: 8px; background: #fff; text-align: center; font-size: 11px; font-weight: bold; cursor: pointer;">
+            ⚙️ Configurações
+          </div>
+        </div>
+      </div>
+
+      <!-- CAROUSEL CONTENT AREA -->
+      <div class="carousel-area">
+        <div class="carousel-indicator">
+          <div style="font-weight: bold; margin-bottom: 5px;">VIEW 1 DE 3: MÉTRICAS DETALHADAS</div>
+          <div class="carousel-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+
+        <!-- VIEW 1: Detailed Metrics -->
+        <div class="view-1">
+          <!-- 2-column layout for detailed cards -->
+          <div class="metrics-2col">
+            <!-- REUSABLE: Enhanced metric cards -->
+            <div class="detail-card" style="position: relative;">
+              <span class="badge badge-reuse" title="Enhanced MetricCard">REUSE MetricCard</span>
+              <div class="detail-header">Chamados do Mês</div>
+              <div class="detail-main">
+                <div class="detail-value">342</div>
+                <div class="detail-icon">📅</div>
+              </div>
+              <div class="detail-subtext">▲ 12% em relação ao mês anterior</div>
+            </div>
+
+            <div class="detail-card" style="position: relative;">
+              <span class="badge badge-reuse" title="Enhanced MetricCard">REUSE MetricCard</span>
+              <div class="detail-header">Fora do Prazo</div>
+              <div class="detail-main">
+                <div class="detail-value">18</div>
+                <div class="detail-icon">🕐</div>
+              </div>
+              <div class="detail-subtext">5.3% do total de chamados</div>
+            </div>
+          </div>
+
+          <!-- 3-column layout for TMA cards -->
+          <div class="metrics-3col">
+            <!-- REUSABLE: Gauge-based cards -->
+            <div class="detail-card" style="position: relative;">
+              <span class="badge badge-reuse" title="Gauge + MetricCard">REUSE Gauge</span>
+              <div class="detail-header">TMA 1ª Resp - Hoje</div>
+              <div style="text-align: center; margin: 15px 0;">
+                <div style="width: 100px; height: 60px; border: 2px solid #666; border-radius: 100px 100px 0 0; border-bottom: none; background: #f0f0f0; position: relative; margin: 0 auto;">
+                  <div style="position: absolute; bottom: 0; left: 50%; width: 2px; height: 45px; background: #333; transform-origin: bottom; transform: translateX(-50%) rotate(-35deg);"></div>
+                </div>
+              </div>
+              <div style="text-align: center; font-size: 24px; font-weight: bold;">23 min</div>
+              <div class="detail-subtext" style="text-align: center;">Meta: < 30 min ✓</div>
+            </div>
+
+            <div class="detail-card" style="position: relative;">
+              <span class="badge badge-reuse" title="Gauge + MetricCard">REUSE Gauge</span>
+              <div class="detail-header">TMA 1ª Resp - Mês</div>
+              <div style="text-align: center; margin: 15px 0;">
+                <div style="width: 100px; height: 60px; border: 2px solid #666; border-radius: 100px 100px 0 0; border-bottom: none; background: #f0f0f0; position: relative; margin: 0 auto;">
+                  <div style="position: absolute; bottom: 0; left: 50%; width: 2px; height: 45px; background: #333; transform-origin: bottom; transform: translateX(-50%) rotate(-40deg);"></div>
+                </div>
+              </div>
+              <div style="text-align: center; font-size: 24px; font-weight: bold;">28 min</div>
+              <div class="detail-subtext" style="text-align: center;">Meta: < 30 min ✓</div>
+            </div>
+
+            <div class="detail-card" style="position: relative;">
+              <span class="badge badge-reuse" title="Gauge + MetricCard">REUSE Gauge</span>
+              <div class="detail-header">TMA Solução - Hoje</div>
+              <div style="text-align: center; margin: 15px 0;">
+                <div style="width: 100px; height: 60px; border: 2px solid #666; border-radius: 100px 100px 0 0; border-bottom: none; background: #f0f0f0; position: relative; margin: 0 auto;">
+                  <div style="position: absolute; bottom: 0; left: 50%; width: 2px; height: 45px; background: #333; transform-origin: bottom; transform: translateX(-50%) rotate(-25deg);"></div>
+                </div>
+              </div>
+              <div style="text-align: center; font-size: 24px; font-weight: bold;">85 min</div>
+              <div class="detail-subtext" style="text-align: center;">Meta: < 120 min ✓</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 2: Agents (3-column for more detail) -->
+        <div class="view-2">
+          <div class="agents-3col">
+            <!-- REUSABLE: Agent cards (larger version) -->
+            <div class="agent-card-large" style="position: relative;">
+              <span class="badge badge-reuse" title="AgentShowcaseCard">REUSE AgentCard</span>
+              <div class="agent-header-large">
+                <div class="agent-rank-large">P1</div>
+              </div>
+              <div class="agent-avatar-large">[AVATAR]</div>
+              <div class="agent-name-large">ENZO</div>
+              <div class="agent-stat-large">
+                <div class="agent-stat-label-large">Encerrados Hoje</div>
+                <div class="agent-stat-value-large">18</div>
+              </div>
+              <div class="ticket-list">
+                <div class="ticket-header">━━━ ATIVIDADE RECENTE ━━━</div>
+                <div class="ticket-item">
+                  <div style="font-weight: bold; margin-bottom: 3px;">#12345 | 15:30</div>
+                  <div>Problema com login no sistema...</div>
+                  <div style="margin-top: 3px; font-weight: bold; color: #333;">✓ FECHADO</div>
+                </div>
+                <div class="ticket-item">
+                  <div style="font-weight: bold; margin-bottom: 3px;">#12344 | 14:45</div>
+                  <div>Email não está enviando...</div>
+                  <div style="margin-top: 3px; font-weight: bold; color: #333;">✓ FECHADO</div>
+                </div>
+              </div>
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: #333;"></div>
+            </div>
+
+            <div class="agent-card-large" style="position: relative;">
+              <span class="badge badge-reuse" title="AgentShowcaseCard">REUSE AgentCard</span>
+              <div class="agent-header-large">
+                <div class="agent-rank-large">P2</div>
+              </div>
+              <div class="agent-avatar-large">[AVATAR]</div>
+              <div class="agent-name-large">RAFAEL</div>
+              <div class="agent-stat-large">
+                <div class="agent-stat-label-large">Encerrados Hoje</div>
+                <div class="agent-stat-value-large">15</div>
+              </div>
+              <div class="ticket-list">
+                <div class="ticket-header">━━━ ATIVIDADE RECENTE ━━━</div>
+                <div class="ticket-item">#12342 | Sistema lento | 15:10 | ✓</div>
+                <div class="ticket-item">#12341 | Backup não funcionou | 14:30 | ✓</div>
+              </div>
+              <div style="position: absolute; bottom: 0; left: 0; width: 80%; height: 5px; background: #666;"></div>
+            </div>
+
+            <div class="agent-card-large" style="position: relative;">
+              <span class="badge badge-reuse" title="AgentShowcaseCard">REUSE AgentCard</span>
+              <div class="agent-header-large">
+                <div class="agent-rank-large">P3</div>
+              </div>
+              <div class="agent-avatar-large">[AVATAR]</div>
+              <div class="agent-name-large">CAROL</div>
+              <div class="agent-stat-large">
+                <div class="agent-stat-label-large">Encerrados Hoje</div>
+                <div class="agent-stat-value-large">12</div>
+              </div>
+              <div class="ticket-list">
+                <div class="ticket-header">━━━ ATIVIDADE RECENTE ━━━</div>
+                <div class="ticket-item">#12339 | Acesso negado | 15:00 | ✓</div>
+                <div class="ticket-item">#12338 | Rede instável | 14:15 | ✓</div>
+              </div>
+              <div style="position: absolute; bottom: 0; left: 0; width: 60%; height: 5px; background: #999;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 3: NPS with Bar Chart -->
+        <div class="view-3">
+          <!-- NEW: Bar chart visualization -->
+          <div class="nps-layout">
+            <div class="nps-chart-area" style="position: relative;">
+              <span class="badge badge-new" title="New: BarChart component">NEW BarChart</span>
+              <div class="chart-title">Distribuição de Avaliações NPS</div>
+              <div class="bar-chart">
+                <div class="bar" style="height: 15%;">
+                  <div class="bar-value">2</div>
+                  <div class="bar-label">Péssimo</div>
+                </div>
+                <div class="bar" style="height: 10%;">
+                  <div class="bar-value">1</div>
+                  <div class="bar-label">Ruim</div>
+                </div>
+                <div class="bar" style="height: 20%;">
+                  <div class="bar-value">3</div>
+                  <div class="bar-label">Regular</div>
+                </div>
+                <div class="bar" style="height: 50%;">
+                  <div class="bar-value">8</div>
+                  <div class="bar-label">Bom</div>
+                </div>
+                <div class="bar" style="height: 90%;">
+                  <div class="bar-value">16</div>
+                  <div class="bar-label">Ótimo</div>
+                </div>
+              </div>
+              <div style="margin-top: 30px; text-align: center; font-size: 11px; color: #666;">
+                Total de respostas: 30 | Taxa de resposta: 8.8%
+              </div>
+            </div>
+
+            <!-- NPS Score Summary -->
+            <div class="nps-summary" style="position: relative;">
+              <span class="badge badge-new" title="New: NPSScore component">NEW NPSScore</span>
+              <div style="font-size: 12px; text-transform: uppercase; margin-bottom: 10px;">Score NPS</div>
+              <div class="nps-score">+47</div>
+              <div class="nps-label" style="color: #333;">Excelente</div>
+              <div style="margin-top: 20px; padding: 15px; border: 2px solid #333; background: #f9f9f9; width: 100%;">
+                <div style="font-size: 10px; font-weight: bold; margin-bottom: 8px; text-align: center;">BREAKDOWN</div>
+                <div style="font-size: 10px; margin-bottom: 5px;">Promotores: 16 (53%)</div>
+                <div style="font-size: 10px; margin-bottom: 5px;">Neutros: 8 (27%)</div>
+                <div style="font-size: 10px;">Detratores: 6 (20%)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Cards -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div style="border: 2px solid #333; padding: 15px; background: #fff; position: relative;">
+              <span class="badge badge-reuse" title="Similar to summary cards">REUSE SummaryCard</span>
+              <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Tickets Encerrados</div>
+              <div style="font-size: 32px; font-weight: bold;">342</div>
+            </div>
+            <div style="border: 2px solid #333; padding: 15px; background: #fff; position: relative;">
+              <span class="badge badge-reuse" title="Similar to summary cards">REUSE SummaryCard</span>
+              <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">Responderam</div>
+              <div style="font-size: 32px; font-weight: bold;">30</div>
+            </div>
+            <div style="border: 2px solid #333; padding: 15px; background: #fff; position: relative;">
+              <span class="badge badge-reuse" title="Similar to summary cards">REUSE SummaryCard</span>
+              <div style="font-size: 10px; text-transform: uppercase; margin-bottom: 5px; font-weight: bold;">S/ Resposta</div>
+              <div style="font-size: 32px; font-weight: bold;">312</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px; padding: 20px; border: 2px dashed #999; background: #f9f9f9;">
+    <h3 style="margin-bottom: 10px;">Principais Características:</h3>
+    <ul style="line-height: 1.8;">
+      <li><strong>Layout Híbrido</strong>: Sidebar fixa (sempre visível) + carrossel central (3 views)</li>
+      <li><strong>Sidebar com stats críticos</strong>: KPIs principais sempre visíveis sem precisar esperar carrossel</li>
+      <li><strong>Componentes reutilizados</strong>: MetricCard, Gauge, AgentCard, Timer (verde = REUSE)</li>
+      <li><strong>4 componentes novos</strong>: StatsSidebar, TMASidebar, QuickActions, BarChart, NPSScore (laranja = NEW)</li>
+      <li><strong>Densidade máxima</strong>: Informação sempre visível + área de detalhes rotativa</li>
+      <li><strong>Melhor uso de espaço</strong>: Sidebar aproveita área lateral, carrossel mostra detalhes</li>
+    </ul>
+  </div>
+</body>
+</html>
