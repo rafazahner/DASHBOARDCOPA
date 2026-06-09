@@ -1095,6 +1095,12 @@ const Dashboard = () => {
     return () => clearInterval(ct);
   }, []);
 
+  // Recarrega a página inteira a cada 60 segundos
+  useEffect(() => {
+    const rt = setTimeout(() => window.location.reload(), 300000);
+    return () => clearTimeout(rt);
+  }, []);
+
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsDragging(true);
     touchStartX.current = e.touches[0].clientX;
