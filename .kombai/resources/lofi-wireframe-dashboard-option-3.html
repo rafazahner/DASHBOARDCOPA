@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção 3 - Layout Ultra-Denso com Micro-Widgets</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: #fff;
+      color: #333;
+      padding: 20px;
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid #333;
+    }
+    .title h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .title p {
+      font-size: 14px;
+      color: #666;
+    }
+    .wireframe-container {
+      max-width: 1920px;
+      margin: 0 auto;
+      border: 3px solid #333;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    
+    /* Compact Header */
+    .header-compact {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 15px;
+      align-items: center;
+      padding: 12px 15px;
+      background: #fff;
+      border: 2px solid #333;
+      margin-bottom: 15px;
+    }
+    .logo-mini {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #666;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+    }
+    .title-mini {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .status-mini {
+      font-size: 10px;
+      color: #666;
+    }
+    .timer-mini {
+      border: 2px solid #666;
+      padding: 6px 12px;
+      background: #e0e0e0;
+      text-align: center;
+    }
+    .clock-mini {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    /* Ultra-compact carousel indicator */
+    .carousel-mini {
+      text-align: center;
+      padding: 6px;
+      background: #fff;
+      border: 2px solid #999;
+      margin-bottom: 12px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .dots-mini {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: 10px;
+    }
+    .dot-mini {
+      width: 8px;
+      height: 8px;
+      border: 2px solid #333;
+      border-radius: 50%;
+      background: #fff;
+      display: inline-block;
+    }
+    .dot-mini.active {
+      background: #333;
+    }
+    
+    /* VIEW 1 - Ultra-Dense Grid (8 columns!) */
+    .view-1 {
+      display: block;
+    }
+    .grid-8col {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .micro-card {
+      border: 2px solid #333;
+      padding: 10px;
+      background: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .micro-label {
+      font-size: 7px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .micro-icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #666;
+      border-radius: 50%;
+      margin: 4px auto;
+      background: #e0e0e0;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .micro-value {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    /* Compact metrics row */
+    .grid-4col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .compact-metric {
+      border: 2px solid #333;
+      padding: 12px;
+      background: #fff;
+      position: relative;
+    }
+    .compact-header {
+      font-size: 8px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .compact-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .compact-value {
+      font-size: 32px;
+      font-weight: bold;
+    }
+    .compact-icon {
+      width: 35px;
+      height: 35px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      background: #e0e0e0;
+    }
+    
+    /* Mini gauge */
+    .mini-gauge-container {
+      text-align: center;
+    }
+    .mini-gauge-arc {
+      width: 70px;
+      height: 42px;
+      border: 2px solid #666;
+      border-radius: 70px 70px 0 0;
+      border-bottom: none;
+      background: #f0f0f0;
+      position: relative;
+      margin: 0 auto 6px;
+    }
+    .mini-gauge-needle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      height: 32px;
+      background: #333;
+      transform-origin: bottom;
+      transform: translateX(-50%) rotate(-30deg);
+    }
+    .mini-gauge-value {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    /* VIEW 2 - Compact Agents (4 columns) */
+    .view-2 {
+      display: none;
+    }
+    .grid-agents-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .agent-compact {
+      border: 2px solid #333;
+      padding: 12px;
+      background: #fff;
+      position: relative;
+    }
+    .agent-header-compact {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .agent-rank-compact {
+      border: 2px solid #333;
+      padding: 4px 8px;
+      background: #e0e0e0;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .agent-avatar-compact {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #666;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+    }
+    .agent-name-compact {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .agent-stat-compact {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .agent-stat-label-compact {
+      font-size: 7px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .agent-stat-value-compact {
+      font-size: 40px;
+      font-weight: bold;
+    }
+    .tickets-compact {
+      margin-top: 10px;
+    }
+    .ticket-compact {
+      border: 1px solid #999;
+      padding: 6px;
+      margin-bottom: 4px;
+      background: #f9f9f9;
+      font-size: 8px;
+    }
+    
+    /* VIEW 3 - NPS Ultra-Compact */
+    .view-3 {
+      display: none;
+    }
+    .nps-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .nps-compact {
+      border: 2px solid #333;
+      padding: 15px;
+      background: #fff;
+      text-align: center;
+      position: relative;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nps-bg-pattern {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px dashed #999;
+      background: #f5f5f5;
+    }
+    .nps-content-compact {
+      position: relative;
+      z-index: 1;
+    }
+    .nps-label-compact {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .nps-value-compact {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .nps-percent-compact {
+      font-size: 14px;
+      padding: 4px 10px;
+      border: 2px solid #333;
+      background: #e0e0e0;
+      display: inline-block;
+    }
+    
+    /* Additional widgets */
+    .widget-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 10px;
+    }
+    .widget {
+      border: 2px solid #333;
+      padding: 12px;
+      background: #fff;
+      position: relative;
+    }
+    .widget-title {
+      font-size: 9px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #999;
+    }
+    
+    .badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 3px 8px;
+      font-size: 9px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      border-radius: 3px;
+      color: white;
+      z-index: 10;
+    }
+    .badge-reuse {
+      background: #4CAF50;
+    }
+    .badge-new {
+      background: #FF9800;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">
+    <h1>Opção 3 - Layout Ultra-Denso com Micro-Widgets</h1>
+    <p>Máxima densidade de informação com grid de 8 colunas e micro-widgets. Ideal para TVs e monitores ultra-wide.</p>
+  </div>
+
+  <div class="wireframe-container">
+    <!-- COMPACT HEADER -->
+    <div class="header-compact" style="position: relative;">
+      <span class="badge badge-reuse" title="Compact version of header">REUSE Header</span>
+      <div class="logo-mini">[LOGO]</div>
+      <div>
+        <div class="title-mini">Dashboard de Chamados Ultra</div>
+        <div class="status-mini">🟢 CONECTADO | Atualizado há 15s</div>
+      </div>
+      <div class="timer-mini" style="position: relative;">
+        <span class="badge badge-reuse" title="Timer component">REUSE Timer</span>
+        <div style="font-size: 8px;">PRÓX</div>
+        <div style="font-size: 16px; font-weight: bold;">18s</div>
+      </div>
+      <div class="clock-mini">14:32</div>
+    </div>
+
+    <!-- COMPACT CAROUSEL INDICATOR -->
+    <div class="carousel-mini">
+      VIEW 1/3: VISÃO GERAL
+      <div class="dots-mini">
+        <div class="dot-mini active"></div>
+        <div class="dot-mini"></div>
+        <div class="dot-mini"></div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: ULTRA-DENSE GRID (8 columns of micro-widgets) -->
+    <div class="view-1">
+      <!-- Top Row: 8 Micro KPI Cards -->
+      <div class="grid-8col">
+        <!-- NEW: MicroCard component -->
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Pendentes</div>
+          <div class="micro-icon">⚠️</div>
+          <div class="micro-value">45</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Novos</div>
+          <div class="micro-icon">➕</div>
+          <div class="micro-value">12</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Em Atend.</div>
+          <div class="micro-icon">⏱️</div>
+          <div class="micro-value">28</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Parados</div>
+          <div class="micro-icon">⏸️</div>
+          <div class="micro-value">5</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative; border-color: #f00;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Vencidos</div>
+          <div class="micro-icon">❌</div>
+          <div class="micro-value" style="color: #f00;">3</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Total Hoje</div>
+          <div class="micro-icon">📊</div>
+          <div class="micro-value">93</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Total Mês</div>
+          <div class="micro-icon">📅</div>
+          <div class="micro-value">342</div>
+        </div>
+        
+        <div class="micro-card" style="position: relative;">
+          <span class="badge badge-new" title="New: MicroCard widget">NEW MicroCard</span>
+          <div class="micro-label">Fora Prazo</div>
+          <div class="micro-icon">🕐</div>
+          <div class="micro-value">18</div>
+        </div>
+      </div>
+
+      <!-- Metrics Row: 4 Compact Cards with Details -->
+      <div class="grid-4col">
+        <!-- REUSABLE: Compact version of MetricCard -->
+        <div class="compact-metric" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact MetricCard">REUSE MetricCard</span>
+          <div class="compact-header">Abertos Hoje</div>
+          <div class="compact-body">
+            <div class="compact-value">27</div>
+            <div class="compact-icon">📈</div>
+          </div>
+          <div style="font-size: 7px; margin-top: 4px; color: #666;">▲ +8 vs ontem</div>
+        </div>
+
+        <!-- REUSABLE: Mini Gauge Component -->
+        <div class="compact-metric" style="position: relative;">
+          <span class="badge badge-reuse" title="Mini Gauge">REUSE Gauge</span>
+          <div class="compact-header">TMA 1ª Resp Hoje</div>
+          <div class="mini-gauge-container">
+            <div class="mini-gauge-arc">
+              <div class="mini-gauge-needle"></div>
+            </div>
+            <div class="mini-gauge-value">23m</div>
+          </div>
+          <div style="font-size: 7px; color: #666; text-align: center;">Meta: <30m ✓</div>
+        </div>
+
+        <div class="compact-metric" style="position: relative;">
+          <span class="badge badge-reuse" title="Mini Gauge">REUSE Gauge</span>
+          <div class="compact-header">TMA 1ª Resp Mês</div>
+          <div class="mini-gauge-container">
+            <div class="mini-gauge-arc">
+              <div class="mini-gauge-needle" style="transform: translateX(-50%) rotate(-35deg);"></div>
+            </div>
+            <div class="mini-gauge-value">28m</div>
+          </div>
+          <div style="font-size: 7px; color: #666; text-align: center;">Meta: <30m ✓</div>
+        </div>
+
+        <div class="compact-metric" style="position: relative;">
+          <span class="badge badge-reuse" title="Mini Gauge">REUSE Gauge</span>
+          <div class="compact-header">TMA Solução Hoje</div>
+          <div class="mini-gauge-container">
+            <div class="mini-gauge-arc">
+              <div class="mini-gauge-needle" style="transform: translateX(-50%) rotate(-20deg);"></div>
+            </div>
+            <div class="mini-gauge-value">85m</div>
+          </div>
+          <div style="font-size: 7px; color: #666; text-align: center;">Meta: <120m ✓</div>
+        </div>
+      </div>
+
+      <!-- Additional Widgets Row -->
+      <div class="widget-row">
+        <!-- NEW: Trend Chart Widget -->
+        <div class="widget" style="position: relative;">
+          <span class="badge badge-new" title="New: TrendChart">NEW TrendChart</span>
+          <div class="widget-title">📈 Tendência Semanal - Chamados</div>
+          <div style="height: 80px; border: 2px solid #999; background: #f9f9f9; display: flex; align-items: flex-end; justify-content: space-around; padding: 5px;">
+            <div style="width: 12%; height: 40%; background: #e0e0e0; border: 1px solid #666;"></div>
+            <div style="width: 12%; height: 55%; background: #e0e0e0; border: 1px solid #666;"></div>
+            <div style="width: 12%; height: 60%; background: #e0e0e0; border: 1px solid #666;"></div>
+            <div style="width: 12%; height: 70%; background: #e0e0e0; border: 1px solid #666;"></div>
+            <div style="width: 12%; height: 85%; background: #e0e0e0; border: 1px solid #666;"></div>
+            <div style="width: 12%; height: 75%; background: #e0e0e0; border: 1px solid #666;"></div>
+            <div style="width: 12%; height: 90%; background: #333; border: 1px solid #666;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-around; margin-top: 4px; font-size: 7px; color: #666;">
+            <div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div><div>Dom</div>
+          </div>
+        </div>
+
+        <!-- NEW: Top Issues Widget -->
+        <div class="widget" style="position: relative;">
+          <span class="badge badge-new" title="New: TopIssues">NEW TopIssues</span>
+          <div class="widget-title">🔥 Top 3 Categorias</div>
+          <div style="font-size: 9px; margin-bottom: 4px; padding: 4px; border: 1px solid #999; background: #f9f9f9;">
+            <div style="font-weight: bold;">1. Login/Acesso</div>
+            <div style="color: #666;">28 chamados</div>
+          </div>
+          <div style="font-size: 9px; margin-bottom: 4px; padding: 4px; border: 1px solid #999; background: #f9f9f9;">
+            <div style="font-weight: bold;">2. Email</div>
+            <div style="color: #666;">19 chamados</div>
+          </div>
+          <div style="font-size: 9px; padding: 4px; border: 1px solid #999; background: #f9f9f9;">
+            <div style="font-weight: bold;">3. Rede/VPN</div>
+            <div style="color: #666;">15 chamados</div>
+          </div>
+        </div>
+
+        <!-- NEW: Quick Stats Widget -->
+        <div class="widget" style="position: relative;">
+          <span class="badge badge-new" title="New: QuickStats">NEW QuickStats</span>
+          <div class="widget-title">⚡ Stats Rápidas</div>
+          <div style="font-size: 9px; margin-bottom: 6px; display: flex; justify-content: space-between; padding: 4px; border-bottom: 1px solid #999;">
+            <div style="font-weight: bold;">SLA Cumprido:</div>
+            <div>94.7%</div>
+          </div>
+          <div style="font-size: 9px; margin-bottom: 6px; display: flex; justify-content: space-between; padding: 4px; border-bottom: 1px solid #999;">
+            <div style="font-weight: bold;">Taxa Reab.:</div>
+            <div>2.1%</div>
+          </div>
+          <div style="font-size: 9px; display: flex; justify-content: space-between; padding: 4px; border-bottom: 1px solid #999;">
+            <div style="font-weight: bold;">Satisfação:</div>
+            <div>4.5/5.0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: COMPACT AGENTS (4 columns, smaller cards) -->
+    <div class="view-2">
+      <div class="grid-agents-4">
+        <!-- REUSABLE: Compact Agent Cards -->
+        <div class="agent-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact AgentCard">REUSE AgentCard</span>
+          <div class="agent-header-compact">
+            <div class="agent-rank-compact">P1</div>
+          </div>
+          <div class="agent-avatar-compact">[AVATAR]</div>
+          <div class="agent-name-compact">ENZO</div>
+          <div class="agent-stat-compact">
+            <div class="agent-stat-label-compact">Encerrados Hoje</div>
+            <div class="agent-stat-value-compact">18</div>
+          </div>
+          <div class="tickets-compact">
+            <div style="font-size: 7px; font-weight: bold; text-align: center; margin-bottom: 4px; padding: 2px; background: #e0e0e0; border: 1px solid #999;">RECENTES</div>
+            <div class="ticket-compact">#12345 | Login | 15:30 | ✓</div>
+            <div class="ticket-compact">#12344 | Email | 14:45 | ✓</div>
+            <div class="ticket-compact">#12343 | Cadastro | 13:20 | ✓</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #333;"></div>
+        </div>
+
+        <div class="agent-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact AgentCard">REUSE AgentCard</span>
+          <div class="agent-header-compact">
+            <div class="agent-rank-compact">P2</div>
+          </div>
+          <div class="agent-avatar-compact">[AVATAR]</div>
+          <div class="agent-name-compact">RAFAEL</div>
+          <div class="agent-stat-compact">
+            <div class="agent-stat-label-compact">Encerrados Hoje</div>
+            <div class="agent-stat-value-compact">15</div>
+          </div>
+          <div class="tickets-compact">
+            <div style="font-size: 7px; font-weight: bold; text-align: center; margin-bottom: 4px; padding: 2px; background: #e0e0e0; border: 1px solid #999;">RECENTES</div>
+            <div class="ticket-compact">#12342 | Sistema | 15:10 | ✓</div>
+            <div class="ticket-compact">#12341 | Backup | 14:30 | ✓</div>
+            <div class="ticket-compact">#12340 | Bloqueio | 13:45 | ✓</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 80%; height: 3px; background: #666;"></div>
+        </div>
+
+        <div class="agent-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact AgentCard">REUSE AgentCard</span>
+          <div class="agent-header-compact">
+            <div class="agent-rank-compact">P3</div>
+          </div>
+          <div class="agent-avatar-compact">[AVATAR]</div>
+          <div class="agent-name-compact">CAROL</div>
+          <div class="agent-stat-compact">
+            <div class="agent-stat-label-compact">Encerrados Hoje</div>
+            <div class="agent-stat-value-compact">12</div>
+          </div>
+          <div class="tickets-compact">
+            <div style="font-size: 7px; font-weight: bold; text-align: center; margin-bottom: 4px; padding: 2px; background: #e0e0e0; border: 1px solid #999;">RECENTES</div>
+            <div class="ticket-compact">#12339 | Acesso | 15:00 | ✓</div>
+            <div class="ticket-compact">#12338 | Rede | 14:15 | ✓</div>
+            <div class="ticket-compact">#12337 | Senha | 13:30 | ✓</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 60%; height: 3px; background: #999;"></div>
+        </div>
+
+        <div class="agent-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact AgentCard">REUSE AgentCard</span>
+          <div class="agent-header-compact">
+            <div class="agent-rank-compact">P4</div>
+          </div>
+          <div class="agent-avatar-compact">[AVATAR]</div>
+          <div class="agent-name-compact">RUBÃO</div>
+          <div class="agent-stat-compact">
+            <div class="agent-stat-label-compact">Encerrados Hoje</div>
+            <div class="agent-stat-value-compact">9</div>
+          </div>
+          <div class="tickets-compact">
+            <div style="font-size: 7px; font-weight: bold; text-align: center; margin-bottom: 4px; padding: 2px; background: #e0e0e0; border: 1px solid #999;">RECENTES</div>
+            <div class="ticket-compact">#12336 | VPN | 14:50 | ✓</div>
+            <div class="ticket-compact">#12335 | Impressora | 13:25 | ✓</div>
+            <div class="ticket-compact">#12334 | PC | 12:40 | ✓</div>
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; width: 40%; height: 3px; background: #ccc;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: NPS COMPACT -->
+    <div class="view-3">
+      <!-- NPS Cards in 5 columns -->
+      <div class="nps-grid-5">
+        <!-- REUSABLE: Compact NPS Cards -->
+        <div class="nps-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact NPS card">REUSE NPSCard</span>
+          <div class="nps-bg-pattern"></div>
+          <div class="nps-content-compact">
+            <div class="nps-label-compact">Péssimo</div>
+            <div style="font-size: 8px; margin: 8px 0;">[Snow]</div>
+            <div class="nps-value-compact">2</div>
+            <div class="nps-percent-compact">6.7%</div>
+          </div>
+        </div>
+
+        <div class="nps-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact NPS card">REUSE NPSCard</span>
+          <div class="nps-bg-pattern"></div>
+          <div class="nps-content-compact">
+            <div class="nps-label-compact">Ruim</div>
+            <div style="font-size: 8px; margin: 8px 0;">[Rain]</div>
+            <div class="nps-value-compact">1</div>
+            <div class="nps-percent-compact">3.3%</div>
+          </div>
+        </div>
+
+        <div class="nps-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact NPS card">REUSE NPSCard</span>
+          <div class="nps-bg-pattern"></div>
+          <div class="nps-content-compact">
+            <div class="nps-label-compact">Regular</div>
+            <div style="font-size: 8px; margin: 8px 0;">[Cloud]</div>
+            <div class="nps-value-compact">3</div>
+            <div class="nps-percent-compact">10.0%</div>
+          </div>
+        </div>
+
+        <div class="nps-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact NPS card">REUSE NPSCard</span>
+          <div class="nps-bg-pattern"></div>
+          <div class="nps-content-compact">
+            <div class="nps-label-compact">Bom</div>
+            <div style="font-size: 8px; margin: 8px 0;">[Sunny]</div>
+            <div class="nps-value-compact">8</div>
+            <div class="nps-percent-compact">26.7%</div>
+          </div>
+        </div>
+
+        <div class="nps-compact" style="position: relative;">
+          <span class="badge badge-reuse" title="Compact NPS card">REUSE NPSCard</span>
+          <div class="nps-bg-pattern"></div>
+          <div class="nps-content-compact">
+            <div class="nps-label-compact">Ótimo</div>
+            <div style="font-size: 8px; margin: 8px 0;">[Sunny+]</div>
+            <div class="nps-value-compact">16</div>
+            <div class="nps-percent-compact">53.3%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary + Additional NPS Widgets -->
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+        <div style="border: 2px solid #333; padding: 12px; background: #fff; position: relative;">
+          <span class="badge badge-reuse" title="Summary card">REUSE SummaryCard</span>
+          <div style="font-size: 8px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px;">Encerrados</div>
+          <div style="font-size: 28px; font-weight: bold;">342</div>
+        </div>
+        
+        <div style="border: 2px solid #333; padding: 12px; background: #fff; position: relative;">
+          <span class="badge badge-reuse" title="Summary card">REUSE SummaryCard</span>
+          <div style="font-size: 8px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px;">Responderam</div>
+          <div style="font-size: 28px; font-weight: bold;">30</div>
+        </div>
+        
+        <div style="border: 2px solid #333; padding: 12px; background: #fff; position: relative;">
+          <span class="badge badge-reuse" title="Summary card">REUSE SummaryCard</span>
+          <div style="font-size: 8px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px;">S/ Resposta</div>
+          <div style="font-size: 28px; font-weight: bold;">312</div>
+        </div>
+        
+        <!-- NEW: NPS Score Summary -->
+        <div style="border: 2px solid #333; padding: 12px; background: #fff; text-align: center; position: relative;">
+          <span class="badge badge-new" title="New: NPS Score">NEW NPSScore</span>
+          <div style="font-size: 8px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px;">NPS Score</div>
+          <div style="font-size: 36px; font-weight: bold;">+47</div>
+          <div style="font-size: 10px; font-weight: bold; margin-top: 4px;">Excelente</div>
+        </div>
+        
+        <!-- NEW: Response Rate -->
+        <div style="border: 2px solid #333; padding: 12px; background: #fff; text-align: center; position: relative;">
+          <span class="badge badge-new" title="New: ResponseRate">NEW ResponseRate</span>
+          <div style="font-size: 8px; text-transform: uppercase; font-weight: bold; margin-bottom: 4px;">Taxa Resposta</div>
+          <div style="font-size: 36px; font-weight: bold;">8.8%</div>
+          <div style="font-size: 10px; font-weight: bold; margin-top: 4px;">30 de 342</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 30px; padding: 20px; border: 2px dashed #999; background: #f9f9f9;">
+    <h3 style="margin-bottom: 10px;">Principais Características:</h3>
+    <ul style="line-height: 1.8;">
+      <li><strong>Grid 8 colunas</strong>: Máxima densidade absoluta com micro-widgets compactos</li>
+      <li><strong>Carrossel mantido</strong>: 3 views automáticas com header ultra-compacto</li>
+      <li><strong>Componentes reutilizados</strong>: MetricCard (versão compacta), Gauge (mini), AgentCard (compacto), NPSCard (verde = REUSE)</li>
+      <li><strong>7 componentes novos</strong>: MicroCard, TrendChart, TopIssues, QuickStats, BarChart, NPSScore, ResponseRate (laranja = NEW)</li>
+      <li><strong>Máximo aproveitamento</strong>: Ideal para TVs 4K, monitores ultra-wide, displays de operação</li>
+      <li><strong>Widgets adicionais</strong>: Gráficos de tendência, top categorias, stats rápidas</li>
+      <li><strong>Info sempre visível</strong>: Menor scroll, mais dados em uma única visualização</li>
+    </ul>
+  </div>
+</body>
+</html>
